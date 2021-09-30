@@ -1,5 +1,10 @@
 # LiveTrains
 
+The goal of this project is to display a live departure and arrivals board for any given UK railway station.
+I'd also like to add a routing function for transport directions, and a daily timetable.
+
+This is very much a work in progress and is roughly based on a previous project under the same name.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.4.
 
 ## Development server
