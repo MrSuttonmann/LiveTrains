@@ -4,8 +4,8 @@ namespace LiveTrains.Models.ReferenceData;
 
 public class Station
 {
-    public string Crs { get; set; }
-    
+    public string Crs { get; set; } = null!;
+
     [JsonPropertyName("Value")]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 }
