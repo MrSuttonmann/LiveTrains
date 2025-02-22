@@ -35,7 +35,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    environment: 
+      name: "Production"
     steps:
       - uses: actions/checkout@v4
 
@@ -71,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Development'
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
