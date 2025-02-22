@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RazorLangVersion>Latest</RazorLangVersion>
+        <UserSecretsId>e2b1dfd1-e7c3-4ff9-b299-75dd49037aa0</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Blazor.Bootstrap" Version="3.3.1" />
+    </ItemGroup>
+    
+</Project>
+ 

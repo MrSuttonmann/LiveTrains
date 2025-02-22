@@ -1,0 +1,18 @@
+﻿@using LiveTrains.Models.LADB
+
+<div class="coach @(Coach.Class?.ToLower())">
+    @Coach.Number
+
+    @if(Coach.Toilet is not null)
+    {
+        <div class="toilet @(Coach.Toilet.Status.ToLower())">
+            <Icon Name="IconName.BadgeWc" />
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Coach Coach { get; set; } = null!;
+}

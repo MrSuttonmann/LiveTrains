@@ -1,0 +1,160 @@
+﻿@rendermode InteractiveServer
+@page "/"
+@page "/{CRS}"
+@using System.ComponentModel.DataAnnotations
+@using System.Text.Json
+@using LiveTrains.Components.Components
+@using LiveTrains.Models
+@using LiveTrains.Services
+@using Microsoft.Extensions.Options
+@inject RailDataService RailDataService
+@inject NavigationManager NavigationManager
+@inject ModalService ModalService
+
+@if (DepartureBoard == null)
+{
+    <PageTitle>Loading...</PageTitle>
+    <p> 
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <PageTitle>LiveTrains - @DepartureBoard.StationName (@DepartureBoard.StationCode)</PageTitle>
+    <h1>@DepartureBoard.StationName (@DepartureBoard.StationCode)</h1>
+
+    @if (DepartureBoard.StationMessages != null)
+    {
+        <Callout Type="CalloutType.Info" Color="CalloutColor.Info" Heading="Station Notices">
+            <ul>
+                @foreach (var message in DepartureBoard.StationMessages)
+                {
+                    <li>
+                        @((MarkupString)message.Value)
+                    </li>
+                }
+            </ul>
+        </Callout>
+    }
+
+    @if (DepartureBoard.TrainServices is null)
+    {
+        <div class="alert alert-warning" role="alert">
+            There are currently no services from this station.
+        </div>
+    } else {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Operator</th>
+                    <th>Destination</th>
+                    <th>Origin</th>
+                    <th>Scheduled Departure</th>
+                    <th>Estimated Departure</th>
+                    <th>Platform</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in DepartureBoard.TrainServices)
+                {
+                    <tr class="@(service.Cancelled ? "table-danger" : "") @(service.Delayed ? "table-warning" : "")">
+                        <td>
+                            @if(service.Cancelled)
+                            {
+                                <div class="badge bg-danger">Cancelled</div>
+                            }
+                            else if(service.Delayed)
+                            {
+                                <Tooltip Class="d-inline-block" Title="@service.DelayReason">
+                                    <span class="badge bg-warning">Delayed</span>
+                                </Tooltip> 
+                            }                
+                        </td>
+                        <td>@service.Operator</td>
+                        <td>
+                            <LocationLinkComponent
+                            CurrentStationCode="@DepartureBoard.StationCode"
+                            Location="@service.Destination?[0]"
+                            ></LocationLinkComponent>
+                        </td>
+                        <td>
+                            <LocationLinkComponent
+                            CurrentStationCode="@DepartureBoard.StationCode"
+                            Location="@service.Origin?[0]"
+                            ></LocationLinkComponent>
+                        </td>
+                        <td>@service.Std</td>
+                        <td>
+                            <EstimatedTimeComponent
+                            Time="@service.Etd"
+                            ></EstimatedTimeComponent>
+                        </td>
+                        <td>@service.Platform</td>
+                        <td>
+                            @if (service.Formation is not null)
+                            {
+                                <Button Type="ButtonType.Button"
+                                Color="ButtonColor.Primary"
+                                Size="ButtonSize.Small"
+                                @onclick="() => ToggleFormationAsync(service)"
+                                >Formation</Button>
+                            }
+                        </td>
+                    </tr>
+                    @if (service.Formation is not null)
+                    {
+                        <tr>
+                            <td colspan="8" style="border-top-style: hidden;">
+                                <Collapse @ref="Collapses[service.ServiceId]">
+                                    <FormationComponent 
+                                        Formation="@service.Formation" 
+                                    />
+                                </Collapse>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <em>Last updated at: @DepartureBoard.GeneratedAt.ToShortTimeString()</em>
+
+    }
+}
+
+@code {
+
+    [Parameter]
+    [MaxLength(3)]
+    public string? CRS { get; set; }
+
+    private DepartureBoard? DepartureBoard { get; set; }
+
+    private Dictionary<string, Collapse> Collapses = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(CRS))
+        {
+            DepartureBoard = await RailDataService.GetDepartureBoardAsync(CRS);
+            if (DepartureBoard.TrainServices is not null)
+            {
+                foreach (var service in DepartureBoard.TrainServices)
+                {
+                    Collapses.Add(service.ServiceId, new());
+                }
+            }
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/LST");
+        }
+    }
+
+    private async Task ToggleFormationAsync(TrainService service)
+    {
+        await Collapses[service.ServiceId].ToggleAsync();
+    }
+}

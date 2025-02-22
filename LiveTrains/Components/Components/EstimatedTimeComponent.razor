@@ -1,0 +1,10 @@
+﻿
+<span class="@(Time is "Cancelled" or not "On time" ? "text-danger" : "")">
+    @Time
+</span>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string Time { get; set; } = null!;
+}

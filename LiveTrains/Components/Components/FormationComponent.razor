@@ -1,0 +1,14 @@
+﻿@using LiveTrains.Models.LADB
+
+<div class="formation">
+    @foreach (var coach in Formation.Coaches)
+    {
+        <CoachComponent Coach="@coach" />
+    }
+</div>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Formation Formation { get; set; } = null!;
+}

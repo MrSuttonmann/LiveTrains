@@ -1,0 +1,19 @@
+﻿@using LiveTrains.Models
+
+@if(CurrentStationCode == Location.LocationCode)
+{
+    <span>@Location.LocationName</span>
+} else
+{
+    <a href="../@Location.LocationCode">@Location.LocationName</a>
+}
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string CurrentStationCode { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public TrainServiceLocation Location { get; set; } = null!;
+}

@@ -1,0 +1,39 @@
+﻿@rendermode InteractiveServer
+@using LiveTrains.Models.ReferenceData
+@using LiveTrains.Services
+@inject StationListService StationListService
+@inject NavigationManager NavigationManager
+
+<AutoComplete DataProvider="StationListProvider"
+@bind-Value="StationName"
+TItem="Station"
+Placeholder="Search for a station..."
+PropertyName="Name"
+OnChanged="(Station station) => OnAutoCompleteChanged(station)"></AutoComplete>
+
+@code {
+
+    private string StationName { get; set; } = string.Empty;
+
+    private async Task<AutoCompleteDataProviderResult<Station>> StationListProvider(AutoCompleteDataProviderRequest<Station> request)
+    {
+        var stations = await StationListService.SearchStationsAsync(request.Filter.Value);
+        return new AutoCompleteDataProviderResult<Station>()
+        {
+            Data = stations,
+            TotalCount = stations.Count()
+        };
+    }
+
+    private void OnAutoCompleteChanged(Station? station)
+    {
+        if (station is null)
+        {
+            return;
+        }
+
+        NavigationManager.NavigateTo($"../{station.Crs}");
+        StationName = string.Empty;
+    }
+
+}
