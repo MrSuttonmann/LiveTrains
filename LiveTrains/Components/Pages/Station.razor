@@ -44,6 +44,31 @@ else
         </div>
     } else {
 
+        <div>
+            @foreach (var service in DepartureBoard.TrainServices)
+            {
+                <h4><LocationLinkComponent CurrentStationCode="@DepartureBoard.StationCode" Location="service.Destination![0]" /></h4>
+                <div><em>@service.Operator</em></div>
+                @if (service.Delayed)
+                {
+                                    <span class="badge bg-warning text-secondary">Delayed</span>
+                    @if (!string.IsNullOrEmpty(service.DelayReason))
+                    {
+                                            <span class="small">@service.DelayReason</span>
+                    }
+                }
+                @if(!string.IsNullOrEmpty(service.Platform))
+                {
+                    <span class="small">Plat: @service.Platform</span>
+                }
+                @if(service.Cancelled)
+                {
+                    <div class="badge bg-danger">Cancelled</div>
+                }
+                
+            }
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -94,25 +119,26 @@ else
                         </td>
                         <td>@service.Platform</td>
                         <td>
-                            @if (service.Formation is not null)
-                            {
-                                <Button Type="ButtonType.Button"
-                                Color="ButtonColor.Primary"
-                                Size="ButtonSize.Small"
-                                @onclick="() => ToggleFormationAsync(service)"
-                                >Formation</Button>
-                            }
+                            @* @if (service.Formation is not null) *@
+                            @* { *@
+                            @*     <Button Type="ButtonType.Button" *@
+                            @*     Color="ButtonColor.Primary" *@
+                            @*     Size="ButtonSize.Small" *@
+                            @*     @onclick="() => ToggleFormationAsync(service)" *@
+                            @*     >Formation</Button> *@
+                            @* } *@
                         </td>
                     </tr>
                     @if (service.Formation is not null)
                     {
                         <tr>
-                            <td colspan="8" style="border-top-style: hidden;">
-                                <Collapse @ref="Collapses[service.ServiceId]">
+                            <td style="border-top-style: hidden;"></td>
+                            <td colspan="7" style="border-top-style: hidden;">
+                                @* <Collapse @ref="Collapses[service.ServiceId]"> *@
                                     <FormationComponent 
                                         Formation="@service.Formation" 
                                     />
-                                </Collapse>
+                                @* </Collapse> *@
                             </td>
                         </tr>
                     }
