@@ -1,4 +1,5 @@
 using System.Reflection;
+using Azure.Identity;
 using LiveTrains.Components;
 using LiveTrains.Models;
 using LiveTrains.Models.Config;
@@ -12,6 +13,13 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", false, true)
     .AddUserSecrets(Assembly.GetExecutingAssembly())
     .AddEnvironmentVariables();
+
+string? keyVaultUrl = builder.Configuration["KeyVault:Url"];
+if (!string.IsNullOrEmpty(keyVaultUrl))
+{
+    var credential = new DefaultAzureCredential();
+    builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUrl), credential);
+}
 
 var configuration = builder.Configuration;
 
