@@ -18,10 +18,7 @@ builder.Configuration
 string? keyVaultUrl = builder.Configuration["KeyVault:Url"];
 if (!string.IsNullOrEmpty(keyVaultUrl))
 {
-    var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
-    {
-        ManagedIdentityClientId = Environment.GetEnvironmentVariable("AZURE_CLIENT_ID")
-    });
+    var credential = new DefaultAzureCredential();
     builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUrl), credential);
 }
 
