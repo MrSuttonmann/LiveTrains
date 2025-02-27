@@ -4,11 +4,25 @@
 <div class="service">
     <div class="header">
         <h4>
-            <a href="../@Service.Destination![0].LocationCode">@Service.Destination![0].LocationName</a>
+            <span class="scheduled-departure-time">@Service.Std to</span>
+            <span><a href="../@Service.Destination![0].LocationCode">@Service.Destination![0].LocationName</a></span>
+            @if (Service.Cancelled)
+            {
+                <span class="badge bg-danger">Cancelled</span>
+            }
+            @if (Service.Delayed)
+            {
+                <span class="badge bg-warning text-secondary">Delayed</span>
+            }
         </h4>
+        
+        @if (!string.IsNullOrEmpty(Service.DelayReason))
+        {
+            <div class="delay-reason small">@Service.DelayReason</div>
+        }
 
         <span class="departure">
-            <span class="departure-time">
+            <span class="estimated-departure-time">
                 <EstimatedTimeComponent EstimatedTime="@Service.Etd" ScheduledTime="@Service.Std"></EstimatedTimeComponent>
             </span>
 
@@ -26,20 +40,7 @@
         <div>
             <em>Operated by:</em> @Service.Operator
         </div>
-        @if (Service.Delayed)
-        {
-            <span class="badge bg-warning text-secondary">Delayed</span>
-            @if (!string.IsNullOrEmpty(Service.DelayReason))
-            {
-                <span class="small">@Service.DelayReason</span>
-            }
-        }
-
-
-        @if (Service.Cancelled)
-        {
-            <div class="badge bg-danger">Cancelled</div>
-        }
+        
     </div>
 
     @if (Service.CallingPoints?[0].CallingPoints is not null && Service.CallingPoints[0].CallingPoints?.Length > 0)

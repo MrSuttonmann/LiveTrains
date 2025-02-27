@@ -3,6 +3,7 @@ html, body {
 }
 
 a, .btn-link {
+    text-decoration: none;
     color: #006bb7;
 }
 
