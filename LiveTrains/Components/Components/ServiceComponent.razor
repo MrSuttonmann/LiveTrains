@@ -1,0 +1,64 @@
+﻿@namespace LiveTrains.Components.Components
+@using LiveTrains.Models
+
+<div class="service">
+    <div class="header">
+        <h4>
+            <a href="../@Service.Destination![0].LocationCode">@Service.Destination![0].LocationName</a>
+        </h4>
+
+        <span class="departure">
+            <span class="departure-time">
+                <EstimatedTimeComponent EstimatedTime="@Service.Etd" ScheduledTime="@Service.Std"></EstimatedTimeComponent>
+            </span>
+
+            @if (!string.IsNullOrEmpty(Service.Platform))
+            {
+                <span class="platform-sign">
+                    <span class="platform-number">@Service.Platform</span>
+                </span>
+            }
+        </span>
+    </div>
+
+
+    <div class="service-information">
+        <div>
+            <em>Operated by:</em> @Service.Operator
+        </div>
+        @if (Service.Delayed)
+        {
+            <span class="badge bg-warning text-secondary">Delayed</span>
+            @if (!string.IsNullOrEmpty(Service.DelayReason))
+            {
+                <span class="small">@Service.DelayReason</span>
+            }
+        }
+
+
+        @if (Service.Cancelled)
+        {
+            <div class="badge bg-danger">Cancelled</div>
+        }
+    </div>
+
+    @if (Service.CallingPoints?[0].CallingPoints is not null && Service.CallingPoints[0].CallingPoints?.Length > 0)
+    {
+        <div>
+            <em>Calling at...</em>
+        </div>
+
+        <span class="calling-points">
+            @foreach (var callingPoint in Service.CallingPoints[0].CallingPoints!)
+            {
+                <span>
+                    <a href="../@callingPoint.Code">@callingPoint.LocationName</a>
+                </span>
+            }
+        </span>
+    }
+</div>
+
+@code {
+    [Parameter] [EditorRequired] public TrainService Service { get; set; } = null!;
+}

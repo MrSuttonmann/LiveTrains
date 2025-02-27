@@ -1,10 +1,22 @@
-﻿
-<span class="@(Time is "Cancelled" or not "On time" ? "text-danger" : "")">
-    @Time
+﻿@namespace LiveTrains.Components.Components
+<span class="@(EstimatedTime is "Cancelled" or not "On time" ? "text-danger" : "")">
+    @if (EstimatedTime != "On time" && EstimatedTime != "Delayed" && EstimatedTime != "Cancelled" && EstimatedTime != ScheduledTime)
+    {
+        <span>Expected: @EstimatedTime</span>
+    }
+    else
+    {
+        @EstimatedTime
+    }
 </span>
 
 @code {
     [Parameter]
     [EditorRequired]
-    public string Time { get; set; } = null!;
+    public string EstimatedTime { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public string ScheduledTime { get; set; } = null!;
+
 }

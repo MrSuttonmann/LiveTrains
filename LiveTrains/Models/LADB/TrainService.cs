@@ -23,4 +23,7 @@ public class TrainService
     public TrainServiceLocation[]? Destination { get; set; }
 
     public Formation? Formation { get; set; }
+
+    [JsonPropertyName("subsequentCallingPoints")]
+    public SubsequentCallingPoints[]? CallingPoints { get; set; }
 }

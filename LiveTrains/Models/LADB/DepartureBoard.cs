@@ -8,6 +8,7 @@ public class DepartureBoard
     public string? StationName { get; set; }
     [JsonPropertyName("crs")]
     public string? StationCode { get; set; }
+    [JsonPropertyName("trainServices")]
     public TrainService[]? TrainServices { get; set; }
     
     [JsonPropertyName("nrccMessages")]
