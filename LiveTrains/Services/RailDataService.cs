@@ -28,6 +28,21 @@ public partial class RailDataService(HttpClient httpClient, IOptions<RailDataCon
         return departureBoard!;
     }
 
+    public async Task<DepartureBoard> GetDepartureBoardWithDetailsAsync(string crs)
+    {
+        if (!CrsRegex().IsMatch(crs))
+        {
+            throw new ArgumentOutOfRangeException(nameof(crs));
+        }
+
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{_config.LADB.ApiUrl}/GetDepBoardWithDetails/{crs}");
+        request.Headers.Add("X-ApiKey", _config.LADB.ApiKey);
+        var response = await httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        var departureBoard = await response.Content.ReadFromJsonAsync<DepartureBoard>();
+        return departureBoard!;
+    }
+
     public async Task<StationList> GetStationListAsync()
     {
         var request = new HttpRequestMessage(HttpMethod.Get, $"{_config.ReferenceData.ApiUrl}/GetStationList/1");
