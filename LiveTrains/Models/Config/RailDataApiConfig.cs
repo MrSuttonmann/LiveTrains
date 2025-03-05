@@ -1,4 +1,4 @@
-﻿namespace LiveTrains.Models;
+﻿namespace LiveTrains.Models.Config;
 
 public class RailDataApiConfig
 {

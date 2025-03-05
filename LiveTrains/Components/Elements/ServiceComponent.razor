@@ -1,11 +1,10 @@
-﻿@namespace LiveTrains.Components.Components
-@using LiveTrains.Models
+﻿@inject NavigationManager NavigationManager
 
 <div class="service">
     <div class="header">
         <h4>
             <span class="scheduled-departure-time">@Service.Std to</span>
-            <span><a href="../@Service.Destination![0].LocationCode">@Service.Destination![0].LocationName</a></span>
+            <span><a href="/station/@Service.Destination![0].LocationCode">@Service.Destination![0].LocationName</a></span>
             @if (Service.Cancelled)
             {
                 <span class="badge bg-danger">Cancelled</span>
@@ -53,13 +52,22 @@
             @foreach (var callingPoint in Service.CallingPoints[0].CallingPoints!)
             {
                 <span>
-                    <a href="../@callingPoint.Code">@callingPoint.LocationName</a>
+                    <a href="/station/@callingPoint.Code">@callingPoint.LocationName</a>
                 </span>
             }
         </span>
     }
+    
+    <a class="btn btn-primary" href="/service/@Service.ServiceId">Details</a>
+
 </div>
 
 @code {
     [Parameter] [EditorRequired] public TrainService Service { get; set; } = null!;
+
+    private void NavigateToService()
+    {
+        NavigationManager.NavigateTo($"/service/{Service.ServiceId}");
+    }
+
 }

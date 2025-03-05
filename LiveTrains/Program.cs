@@ -1,8 +1,7 @@
 using System.Reflection;
 using Azure.Identity;
-using LiveTrains.Components;
-using LiveTrains.Models;
 using LiveTrains.Models.Config;
+using LiveTrains.Components;
 using LiveTrains.Services;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -32,16 +31,19 @@ builder.Services.AddRailDataConfig(configuration);
 
 builder.Services.AddBlazorBootstrap();
 
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<IHttpClientBuilder>()
+                .AddStandardResilienceHandler();
 
 builder.Services.TryAddTransient<RailDataService>();
 builder.Services.TryAddSingleton<StationListService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
+
+} else { 
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
@@ -50,9 +52,9 @@ if (!app.Environment.IsDevelopment())
 app.UseWebSockets();
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

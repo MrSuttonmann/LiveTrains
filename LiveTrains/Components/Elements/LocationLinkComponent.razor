@@ -1,12 +1,12 @@
-﻿@namespace LiveTrains.Components.Components
-@using LiveTrains.Models
+﻿@using LiveTrains.Models
+@using LiveTrains.Models.LADB
 
 @if(CurrentStationCode == Location.LocationCode)
 {
     <span>@Location.LocationName</span>
 } else
 {
-    <a href="../@Location.LocationCode">@Location.LocationName</a>
+    <a href="/station/@Location.LocationCode">@Location.LocationName</a>
 }
 
 @code {

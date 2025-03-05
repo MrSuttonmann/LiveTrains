@@ -1,7 +1,4 @@
-﻿@namespace LiveTrains.Components.Components
-@using LiveTrains.Models.LADB
-
-<div class="coach @(Coach.Class?.ToLower())">
+﻿<div class="coach @(Coach.Class?.ToLower())">
     @Coach.Number
 
     @if(Coach.Toilet is not null)

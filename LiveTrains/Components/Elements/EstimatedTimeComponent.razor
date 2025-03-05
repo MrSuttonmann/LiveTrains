@@ -1,5 +1,4 @@
-﻿@namespace LiveTrains.Components.Components
-<span class="@(EstimatedTime is "Cancelled" or not "On time" ? "text-danger" : "")">
+﻿<span class="@(EstimatedTime is "Cancelled" or not "On time" ? "text-danger" : "")">
     @if (EstimatedTime != "On time" && EstimatedTime != "Delayed" && EstimatedTime != "Cancelled" && EstimatedTime != ScheduledTime)
     {
         <span>Expected: @EstimatedTime</span>

@@ -1,17 +1,11 @@
-﻿@using LiveTrains.Services
-@using LiveTrains.Components.Components
-@inherits LayoutComponentBase
-@inject StationListService StationListService
+﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-
     <main>
         <div class="top-row px-4">
-            <SearchComponent />
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <div class="">LiveTrains</div>
+            <SearchComponent/>
+            <ThemeSwitcher Position="DropdownMenuPosition.End"></ThemeSwitcher>
         </div>
 
         <article class="content px-4">

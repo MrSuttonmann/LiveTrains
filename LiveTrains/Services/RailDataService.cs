@@ -1,5 +1,5 @@
-﻿using LiveTrains.Models;
-using LiveTrains.Models.Config;
+﻿using LiveTrains.Models.Config;
+using LiveTrains.Models.LADB;
 using LiveTrains.Models.ReferenceData;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
@@ -15,6 +15,7 @@ public partial class RailDataService(HttpClient httpClient, IOptions<RailDataCon
 
     public async Task<DepartureBoard> GetDepartureBoardAsync(string crs)
     {
+        ArgumentException.ThrowIfNullOrEmpty(crs);
         if(!CrsRegex().IsMatch(crs))
         {
             throw new ArgumentOutOfRangeException(nameof(crs));
@@ -30,6 +31,7 @@ public partial class RailDataService(HttpClient httpClient, IOptions<RailDataCon
 
     public async Task<DepartureBoard> GetDepartureBoardWithDetailsAsync(string crs)
     {
+        ArgumentException.ThrowIfNullOrEmpty(crs);
         if (!CrsRegex().IsMatch(crs))
         {
             throw new ArgumentOutOfRangeException(nameof(crs));

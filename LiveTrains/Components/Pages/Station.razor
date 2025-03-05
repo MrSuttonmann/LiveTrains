@@ -1,13 +1,9 @@
 ﻿@rendermode InteractiveServer
-@page "/"
-@page "/{CRS}"
+@page "/station/{CRS}"
 @using System.ComponentModel.DataAnnotations
-@using LiveTrains.Components.Components
-@using LiveTrains.Models
 @using LiveTrains.Services
 @inject RailDataService RailDataService
 @inject NavigationManager NavigationManager
-@inject ModalService ModalService
 
 @if (DepartureBoard == null)
 {

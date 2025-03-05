@@ -1,7 +1,6 @@
-﻿using LiveTrains.Models.LADB;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace LiveTrains.Models;
+namespace LiveTrains.Models.LADB;
 
 public class TrainService
 {

@@ -5,7 +5,8 @@ namespace LiveTrains.Services;
 public class StationListService(RailDataService railDataService)
 {
     private StationList? _stationList;
-    
+    private DateTime _stationListLastUpdate = DateTime.MinValue;
+
     public async Task<List<Station>> SearchStationsAsync(string search)
     {
         var stationList = await GetStationListAsync();
@@ -15,15 +16,21 @@ public class StationListService(RailDataService railDataService)
             .ToList();
     }
     
+
     public async Task<StationList> GetStationListAsync()
     {
-        var versionDate = DateTime.Now.ToString("yyyy-MM-dd");
-
-        if (_stationList is null || !_stationList.Version.StartsWith(versionDate))
+        
+        if (_stationList is null || ShouldUpdateStationList())
         {
             _stationList = await railDataService.GetStationListAsync();
+            _stationListLastUpdate = DateTime.UtcNow;
         }
 
         return _stationList;
+    }
+
+    private bool ShouldUpdateStationList()
+    {
+        return DateTime.UtcNow - _stationListLastUpdate == TimeSpan.FromDays(30);
     }
 }

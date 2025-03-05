@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace LiveTrains.Models;
+namespace LiveTrains.Models.LADB;
 
 public class DepartureBoard
 {
